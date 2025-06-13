@@ -11,5 +11,4 @@ Looking at separating implicit diffusion from non-linear upwind advection scheme
 Adaptive time-stepping
 
 # Post-processing
-
-## Calculate
+Calculate advective fluxes using both WENO and a 6th-order centred scheme
