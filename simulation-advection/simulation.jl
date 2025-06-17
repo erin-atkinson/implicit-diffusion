@@ -8,12 +8,12 @@ const T = 1
 # Velocity
 const c = 1
 
-# Distribution width
-const σ = 8L / N
 
 const order = parse(Int, ARGS[2])
 const N = parse(Int, ARGS[3])
 const output_folder = joinpath(ARGS[4], "advection", "$(ARGS[1])-$order-$N")
+# Distribution width
+const σ = 2L / N
 
 # Initial timestep
 Δt = 0.01T / N
@@ -21,7 +21,8 @@ const output_folder = joinpath(ARGS[4], "advection", "$(ARGS[1])-$order-$N")
 grid = RectilinearGrid(GPU();
     size=(N, ),
     extent=(L, ),
-    topology=(Periodic, Flat, Flat)
+    topology=(Periodic, Flat, Flat),
+    halo=(5,)
 )
 
 const advection = ARGS[1] == "WENO" ? WENO(grid; order) :
@@ -30,7 +31,6 @@ const advection = ARGS[1] == "WENO" ? WENO(grid; order) :
 
 model = NonhydrostaticModel(; grid,
     advection,
-    forcing,
     tracers=(:ψ, ),
     closure=nothing,
 )
